@@ -31,7 +31,10 @@ import time
 import re
 import argparse
 import warnings
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
+# Türkiye saati için sabit UTC+3
+TZ_TURKEY = timezone(timedelta(hours=3))
 
 # SSL uyarılarını bastır
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
@@ -62,10 +65,10 @@ def telegram_gonder(mesaj: str) -> bool:
     try:
         r = requests.post(url, json=payload, timeout=15)
         r.raise_for_status()
-        print(f"[{datetime.now():%Y-%m-%d %H:%M}] ✅ Telegram mesajı gönderildi.")
+        print(f"[{datetime.now(TZ_TURKEY):%Y-%m-%d %H:%M}] ✅ Telegram mesajı gönderildi.")
         return True
     except Exception as e:
-        print(f"[{datetime.now():%Y-%m-%d %H:%M}] ❌ Telegram hatası: {e}")
+        print(f"[{datetime.now(TZ_TURKEY):%Y-%m-%d %H:%M}] ❌ Telegram hatası: {e}")
         return False
 
 
@@ -130,7 +133,7 @@ def staj_duyurularini_filtrele(duyurular: list) -> list:
 
 def siteyi_kontrol_et():
     """Ana kontrol fonksiyonu."""
-    zaman = datetime.now().strftime("%Y-%m-%d %H:%M")
+    zaman = datetime.now(TZ_TURKEY).strftime("%Y-%m-%d %H:%M")
     print(f"[{zaman}] 🔍 Duyurular bölümü taranıyor...")
 
     duyurular, hata = duyurulari_cek()
