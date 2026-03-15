@@ -2,8 +2,8 @@ name: Duyuru Takip Botu
 
 on:
   schedule:
-    # Her saat başı çalışması için (UTC zaman dilimine göre)
-    - cron: '0 * * * *'
+    # Her gün Türkiye saatiyle 00:00'da çalışması için (UTC 21:00)
+    - cron: '0 21 * * *'
   workflow_dispatch: # İstediğinde elle çalıştırmak için buton ekler
 
 jobs:
@@ -28,4 +28,4 @@ jobs:
         env:
           CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-        run: python staj_takip_bot_2.py
+        run: python staj_takip_bot_2.py --once
